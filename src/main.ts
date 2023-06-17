@@ -14,7 +14,12 @@ interface IWorker {
     parentPort: MessagePort,
     worker: Worker
 }
-
+export interface IWorkerMessage {
+    uuid: string,
+    data: {
+        value: number
+    }
+}
 for (let i = 0; i < USE_THREADS; i++) {
     // Create a UUID for each thread
     const uuid = randomUUID();
@@ -39,7 +44,7 @@ for (let i = 0; i < USE_THREADS; i++) {
 
 // Attach an event listener to the 0th parent port for debugging purposes
 // print out what we get back.
-workers[0]?.parentPort.on("message", (data: any) => console.log(`Got back ${data}`));
+workers[0]?.parentPort.on("message", (message: IWorkerMessage) => console.log(`Got back ${message.data.value}`));
 
 // Send a single number, this should likely be an interface so that the worker and the main thread agree on the data structure
-workers[0]?.parentPort.postMessage(1);
+workers[0]?.parentPort.postMessage({uuid: workers[0].uuid, data: {value: 1}});
