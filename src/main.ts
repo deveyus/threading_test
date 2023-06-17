@@ -44,7 +44,7 @@ for (let i = 0; i < USE_THREADS; i++) {
 
 // Attach an event listener to the 0th parent port for debugging purposes
 // print out what we get back.
-workers[0]?.parentPort.on("message", (message: IWorkerMessage) => console.log(`Got back ${message.data.value}`));
+workers[0]?.parentPort.on("message", (message: IWorkerMessage) => console.log(message));
 
 // Send a single number, this should likely be an interface so that the worker and the main thread agree on the data structure
 workers[0]?.parentPort.postMessage({uuid: workers[0].uuid, data: {value: 1}});
